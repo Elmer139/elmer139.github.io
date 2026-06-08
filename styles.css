@@ -96,23 +96,6 @@ body {
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   AUTO-THEME FADE — slow, deliberate transition when the page
-   auto-shifts from light to dark on deep scroll. The 1400ms ease feels
-   like ambient lighting changing, not a UI flip.
-   ════════════════════════════════════════════════════════════════════ */
-body.theme-fading,
-body.theme-fading .masthead,
-body.theme-fading .theme-toggle,
-body.theme-fading .video-frame,
-body.theme-fading .case__media {
-  transition:
-    background-color 1400ms var(--ease),
-    color 1400ms var(--ease),
-    border-color 1400ms var(--ease),
-    box-shadow 1400ms var(--ease) !important;
-}
-
-/* ════════════════════════════════════════════════════════════════════
    BACK TO TOP — bottom-right circular cue, fades in after one viewport
    ════════════════════════════════════════════════════════════════════ */
 .back-to-top {
@@ -168,105 +151,7 @@ body.theme-fading .case__media {
   border-color: var(--accent);
 }
 
-/* ════════════════════════════════════════════════════════════════════
-   THEME TOAST — slim mono caption with revert action
-   ════════════════════════════════════════════════════════════════════ */
-/* The whole pill is the click target so the user doesn't have to aim at
-   a tiny inner button while mid-scroll. Positioned bottom-CENTER so it's
-   close to wherever the cursor naturally sits while reading, not parked
-   in a far corner. */
-.theme-toast {
-  position: fixed;
-  bottom: clamp(24px, 3.5vh, 40px);
-  left: 50%;
-  z-index: 45;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 22px;
-  background: var(--ink-strong);
-  color: var(--paper-tint);
-  border: 1px solid var(--ink-strong);
-  border-radius: 999px;
-  opacity: 0;
-  transform: translate(-50%, 18px);
-  pointer-events: none;
-  cursor: pointer;
-  font: inherit;
-  text-align: left;
-  white-space: nowrap;
-  transition:
-    opacity 600ms var(--ease),
-    transform 600ms var(--ease),
-    background-color 240ms var(--ease),
-    border-color 240ms var(--ease),
-    color 240ms var(--ease);
-  box-shadow: 0 22px 50px -16px rgba(0, 0, 0, 0.45);
-  max-width: calc(100vw - 32px);
-}
-.theme-toast.is-visible {
-  opacity: 1;
-  transform: translate(-50%, 0);
-  pointer-events: auto;
-}
-.theme-toast:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #FFF6EE;
-}
-.theme-toast:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-.theme-toast__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
-  animation: pulse 2.4s var(--ease) infinite;
-  transition: background-color 240ms var(--ease);
-}
-.theme-toast:hover .theme-toast__dot { background: #FFF6EE; }
-.theme-toast__label,
-.theme-toast__action {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: inherit;
-}
-.theme-toast__divider {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  opacity: 0.5;
-}
-.theme-toast__action {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-[data-theme="dark"] .theme-toast {
-  background: var(--paper-tint);
-  color: var(--ink-strong);
-  border-color: var(--paper-tint);
-}
-[data-theme="dark"] .theme-toast:hover {
-  background: var(--accent);
-  color: #FFF6EE;
-  border-color: var(--accent);
-}
-[data-theme="dark"] .theme-toast__dot { background: var(--accent); }
-
 @media (max-width: 540px) {
-  .theme-toast {
-    bottom: 88px;
-    padding: 12px 18px;
-    font-size: 11px;
-    max-width: calc(100vw - 24px);
-  }
   .back-to-top { bottom: 16px; right: 16px; width: 48px; height: 48px; }
 }
 
@@ -1304,10 +1189,10 @@ body.modal-open { overflow: hidden; }
   stroke-dashoffset: 0;
   opacity: 1;
 }
-/* Without JS we can't auto-fade or toggle; hide the controls so they
-   don't appear broken. The theme starts in light per the html attribute. */
+/* Without JS we can't toggle theme or run scroll-driven UI; hide those
+   controls so they don't appear broken. The theme starts in light per
+   the html attribute. */
 .no-js .theme-toggle,
-.no-js .theme-toast,
 .no-js .back-to-top,
 .no-js .scroll-progress {
   display: none;

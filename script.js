@@ -36,16 +36,10 @@
 
   applyTheme(getPreferredTheme());
 
-  // Tracks whether the user has chosen a theme during *this* page load.
-  // Used to suppress the auto-fade-to-dark after they've made a choice,
-  // without surviving across reloads (so fresh visits always see the move).
-  let userManuallyToggled = false;
-
   document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('themeToggle');
     if (toggle) {
       toggle.addEventListener('click', () => {
-        userManuallyToggled = true;
         const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         localStorage.setItem(STORAGE_KEY, next);
         applyTheme(next);
@@ -59,41 +53,10 @@
       }
     });
 
-    /* ── Masthead scroll state, progress bar, back-to-top, auto-fade ── */
+    /* ── Masthead scroll state, progress bar, back-to-top ────────── */
     const masthead = document.querySelector('.masthead');
     const progressBar = document.querySelector('.scroll-progress__bar');
     const backToTop = document.getElementById('backToTop');
-    const themeToast = document.getElementById('themeToast');
-    const pageLoadAt = performance.now();
-    let autoSwitched = false;
-    let toastDismissTimer = null;
-
-    const showToast = () => {
-      if (!themeToast) return;
-      themeToast.classList.add('is-visible');
-      clearTimeout(toastDismissTimer);
-      // 12s gives the user time to register, read, decide, and reach the
-      // pill even if their cursor is mid-page when it appears.
-      toastDismissTimer = setTimeout(() => themeToast.classList.remove('is-visible'), 12000);
-    };
-    const hideToast = () => {
-      if (!themeToast) return;
-      themeToast.classList.remove('is-visible');
-      clearTimeout(toastDismissTimer);
-    };
-
-    // The whole pill is the click target — no aiming at a tiny inner button.
-    if (themeToast) {
-      themeToast.addEventListener('click', () => {
-        userManuallyToggled = true;
-        document.body.classList.add('theme-fading');
-        applyTheme('light');
-        // Intentionally NOT persisting: this is a one-shot revert.
-        // If they want a permanent preference, the masthead toggle handles that.
-        hideToast();
-        setTimeout(() => document.body.classList.remove('theme-fading'), 1500);
-      });
-    }
 
     if (backToTop) {
       backToTop.addEventListener('click', () => {
@@ -115,26 +78,6 @@
       }
 
       if (backToTop) backToTop.classList.toggle('is-visible', y > vh * 0.9);
-
-      // Ambient theme shift — fires once per page load when the user is
-      // settled into the work section. Suppressed if they've manually picked
-      // a theme this session (toggle or toast). Does NOT consult localStorage
-      // so the showcase always lands on a fresh visit, even for return
-      // visitors whose previous session ended in light mode.
-      if (
-        !autoSwitched &&
-        !userManuallyToggled &&
-        root.getAttribute('data-theme') === 'light' &&
-        y > vh * 1.4 &&
-        performance.now() - pageLoadAt > 1000
-      ) {
-        autoSwitched = true;
-        document.body.classList.add('theme-fading');
-        applyTheme('dark');
-        // Don't persist to storage — fresh visits start light each time
-        setTimeout(showToast, 700);
-        setTimeout(() => document.body.classList.remove('theme-fading'), 1700);
-      }
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
