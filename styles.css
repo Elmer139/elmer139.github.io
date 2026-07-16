@@ -373,12 +373,12 @@ body {
   color: var(--ink-soft);
 }
 .hero__line--sub {
-  font-size: clamp(17px, 0.42em, 68px);
-  letter-spacing: -0.018em;
-  line-height: 1.25;
+  font-size: clamp(16px, 0.34em, 56px);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
 }
-.hero__line--alt + .hero__line--sub {
-  margin-top: 0.55em;
+.hero__line:not(.hero__line--sub) + .hero__line--sub {
+  margin-top: 0.6em;
 }
 .hero__heading em {
   font-style: normal;
