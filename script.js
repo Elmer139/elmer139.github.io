@@ -122,7 +122,7 @@
           }
         });
       }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
-      document.querySelectorAll('.case, .about, .contact').forEach((el) => ruleIO.observe(el));
+      document.querySelectorAll('.case, .presenting, .about, .contact').forEach((el) => ruleIO.observe(el));
 
       // Colophon top rule + signature reveal share an observer
       const sigIO = new IntersectionObserver((entries) => {
