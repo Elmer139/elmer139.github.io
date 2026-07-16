@@ -372,6 +372,14 @@ body {
   font-weight: 400;
   color: var(--ink-soft);
 }
+.hero__line--sub {
+  font-size: clamp(17px, 0.42em, 68px);
+  letter-spacing: -0.018em;
+  line-height: 1.25;
+}
+.hero__line--alt + .hero__line--sub {
+  margin-top: 0.55em;
+}
 .hero__heading em {
   font-style: normal;
   color: var(--accent);
